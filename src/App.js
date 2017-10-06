@@ -6,7 +6,7 @@ class App extends Component {
 
   state = {
     isFiltered: false,
-    pendingGuests: "",
+    pendingGuest: "",
     guests: [
       {
         name: "Treasure",
@@ -43,6 +43,14 @@ class App extends Component {
     toggleConfirmationAt = index => 
       this.toggleGuestPropertyAt("isConfirmed", index);
 
+    removeGuestAt = index => 
+      this.setState({
+        guests: [
+          ...this.state.guests.slice(0, index),
+          ...this.state.guests.slice(index + 1)
+        ]
+      });
+
     toggleEditingAt = index => 
       this.toggleGuestPropertyAt("isEditing", index);
 
@@ -66,7 +74,7 @@ class App extends Component {
 
   handleNameInput = e => 
     this.setState({
-      pendingGuests: e.target.value
+      pendingGuest: e.target.value
     });
 
   newGuestSubmitHandler = e => {
@@ -74,7 +82,7 @@ class App extends Component {
     this.setState({
       guests: [
         {
-          name: this.state.pendingGuests,
+          name: this.state.pendingGuest,
           isConfirmed: false,
           isEditing: false,
         },
@@ -97,35 +105,35 @@ class App extends Component {
               <input 
                 type="text" 
                 onChange={this.handleNameInput}
-                value={this.state.pendingGuests} 
-                placeholder="Invite Someone" />
+                value={this.state.pendingGuest} 
+                placeholder="Add Guest" />
               <button type="submit" name="submit" value="submit">Submit</button>
           </form>
         </header>
         <div className="main">
           <div>
-            <h2>Invitees</h2>
+            <h2>Guests</h2>
             <label>
               <input 
                 type="checkbox"
                 onChange={this.toggleFilter} 
                 checked={this.state.isfiltered}
-              /> Hide those who haven't responded
+              /> Hide unconfirmed guests
             </label>
           </div>
           <table className="counter">
             <tbody>
               <tr>
                 <td>Attending:</td>
-                <td>2</td>
+                <td></td>
               </tr>
               <tr>
                 <td>Unconfirmed:</td>
-                <td>1</td>
+                <td></td>
               </tr>
               <tr>
                 <td>Total:</td>
-                <td>3</td>
+                <td></td>
               </tr>
             </tbody>
           </table>
@@ -136,6 +144,8 @@ class App extends Component {
             toggleEditingAt={this.toggleEditingAt}
             setNameAt={this.setNameAt} 
             isFiltered={this.state.isFiltered}
+            removeGuestAt={this.removeGuestAt}
+            pendingGuest={this.state.pendingGuest}
             />
 
         </div>
